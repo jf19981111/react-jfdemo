@@ -1,7 +1,10 @@
 import React from 'react';
+// 这里是不需要使用 ReactDOM的
 import logo from './logo.svg';
+// webpack 玩图片，都需要将图片使用模块的方式引入进来
 import './App.css';
 
+// 函数的方式定义组件， return出去的就是组件的模板内容
 function App() {
   return (
     <div className="App">
