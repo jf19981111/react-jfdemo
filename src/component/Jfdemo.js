@@ -5,6 +5,9 @@ import React from 'react'
 // 引入样式
 import './jfdemo.css'
 
+// 引入组件
+import Jfitem from './Jfitem'
+
 class Jfdemo extends React.Component {
 
     constructor () {
@@ -26,33 +29,66 @@ class Jfdemo extends React.Component {
                 <button className="btn" onClick={ this.add.bind(this) }>ADD</button>
 
                 <ul>
-                    {/* <li>草莓</li>
-                    <li>芒果</li> */}
+                    
                     {
+                        // this.state.fruits.map((item,index) => {
+                        //     return ( <Jfitem 
+                        //         text={ item } 
+                        //         index= {index}
+                        //         key={index}
+                        //         del={ this.del.bind(this) } 
+                        //         />
+                        //     ) 
+                        // })
+
+                        this.getItem()
+
+                    }
+
+                    {/* {
                         this.state.fruits.map((item,index) => {
                             return <li key={index} onClick={ this.del.bind(this,index) }>{ item }</li>
                         })
-                    }
-                    
-                    {/* {
-                        [ <li>草莓</li>, <li>芒果</li> ]
                     } */}
+
 
                 </ul>
             </div>
         )
     }
 
+
+    /**
+     * 获取 item
+     */
+    getItem () {
+       return this.state.fruits.map((item,index) => {
+            return ( <Jfitem 
+                text={ item } 
+                index= {index}
+                key={index}
+                del={ this.del.bind(this) } 
+                />
+            ) 
+        })
+    }
+
+
     /**
      * add 的添加方法
      */
     add () {
-        console.log('add点击')
-        this.setState({
-            // fruits: this.state.fruits.concat(this.state.inputVal),
-            fruits: [...this.state.fruits, this.state.inputVal],
+        // console.log('add点击')
+        // this.setState({
+        //     // fruits: this.state.fruits.concat(this.state.inputVal),
+        //     fruits: [...this.state.fruits, this.state.inputVal],
+        //     inputVal: ''
+        // })
+
+        this.setState((prevState) => ({
+            fruits: [...prevState.fruits, prevState.inputVal],
             inputVal: ''
-        })
+        }))
     }
 
     /**
@@ -71,22 +107,44 @@ class Jfdemo extends React.Component {
             可以使用 拷贝的方式，先将 state 中的 fruits 给复制一份
         */ 
        // 在 react 中 事件处理函数中的 this 默认指向 undefined
-        let fruits = [...this.state.fruits]
-        fruits.splice(index,1)
-        this.setState({
-            fruits: fruits
+        // let fruits = [...this.state.fruits]
+        // fruits.splice(index,1)
+        // this.setState({
+        //     fruits: fruits
+        // })
+        this.setState((prevState) => {
+            let fruits = [...prevState.fruits]
+            fruits.splice(index,1)
+            return {
+                fruits
+            }
         })
+
     }
 
     /**
      * chgVal 改变 inputVal
      */
     chgVal (eve) {
+        // console.log(eve) // 是 react 中合成对象，不需要考虑兼容问题
         // console.log(eve.target.value)
-       this.setState({
-           // 获取到 input 上的 value 值，要通过事件对象
-           inputVal: eve.target.value 
-       })
+    //    this.setState({
+    //        // 获取到 input 上的 value 值，要通过事件对象
+    //        inputVal: eve.target.value 
+    //    })
+        
+        // 异步的，所以不知道什么时候存在这个 eve.target
+        let val = eve.target.value
+
+        // this.setState(() => {
+        //     return {
+        //         inputVal: val 
+        //     }
+        // })
+
+        this.setState(() => ({
+            inputVal: val
+        }))
     }
 }
 
